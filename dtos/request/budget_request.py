@@ -3,7 +3,7 @@ from datetime import datetime
 from pydantic import BaseModel
 
 
-class BudgetRequest(BaseModel):
+class BudgetCreateRequest(BaseModel):
     amount: float
     start_date: datetime
     end_date: datetime

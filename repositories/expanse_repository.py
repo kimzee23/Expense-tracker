@@ -1,10 +1,9 @@
 from config.database import db
 from bson import ObjectId
 
-
 class ExpenseRepository:
-    def __init__(self):
-        self.collection =db.expenses
+    def __init__(self, db):
+        self.collection = db["expenses"]
     def save(self,expense_dict:dict) -> str:
         result = self.collection.insert_one(expense_dict)
         return str(result.inserted_id)

@@ -17,7 +17,7 @@ from exceptions.incorrect_password_exception import IncorrectPasswordException
 from exceptions.user_already_exits_exception import user_already_exits_exception
 from pydantic import ValidationError
 
-# user_controller = Blueprint("user_controller", __name__)
+
 def create_user_controller(db):
     user_controller = Blueprint("user_controller", __name__)
     repo = userRepository(db.users)
@@ -47,7 +47,7 @@ def create_user_controller(db):
             reg_req = UserRegisterRequest(**payload)
             new_user_id = service.register(reg_req)
 
-            # fetch the freshly created user
+
             user_doc = repo.find_by_email(reg_req.email.strip())
             user_model = document_to_user_model_dto(user_doc)
             resp_dto = user_model_to_response_dto(user_model)
