@@ -11,7 +11,7 @@ class TestReportController(unittest.TestCase):
 
     def setUp(self):
         self.test_db = self.client["test_expense_tracker"]
-        self.test_db["reports"].delete_many({})  # Clean reports collection before each test
+        self.test_db["reports"].delete_many({})
 
     def test_create_report_success(self):
         data = {
