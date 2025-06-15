@@ -12,10 +12,10 @@ def  document_to_user_model_dto(doc):
         email=doc["email"],
         phone=doc["phone"],
         age=doc["age"],
-        password=doc["password"],
+        password=doc["password"]
     )
 
-def user_model_to_response_dto(user: UserModel) -> userLoginResponse:
+def user_model_to_response_dto(user: UserModel) -> UserRegisterResponse:
     return UserRegisterResponse(
         id=user.id,
         name=user.name,

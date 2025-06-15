@@ -1,7 +1,6 @@
 from datetime import datetime
 
 from models.report_model import Report
-from dtos.response.response_report import ReportResponse
 
 def document_to_report_model_dto(doc):
     return Report(**doc)

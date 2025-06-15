@@ -2,9 +2,7 @@ import unittest
 from flask import Flask
 from pymongo import MongoClient
 
-from controllers import user_controller
 from controllers.user_controller import create_user_controller
-from dtos.request.user_register_request import UserRegisterRequest
 from werkzeug.security import generate_password_hash
 
 
@@ -15,7 +13,6 @@ class TestUserControllerRegister(unittest.TestCase):
         self.db = self.mongo_client.test_expense_tracker_py
         self.collection = self.db.users
         self.collection.delete_many({})
-
 
         self.app = Flask(__name__)
         user_controller = create_user_controller(self.db)
@@ -46,23 +43,23 @@ class TestUserControllerRegister(unittest.TestCase):
     def test_register_duplicate(self):
         self.collection.insert_one({
             "name": "Ada",
-            "email": "ada@example.com",
+            "email": "ada@gmail.com",
             "phone": "08012345678",
             "age": 22,
             "password": generate_password_hash("secret123")
         })
         payload = {
             "name": "Ada",
-            "email": "ada@example.com",
+            "email": "ada@gmail.com",
             "password": "secret123",
             "phone": "08012345678",
             "age": 22
         }
         resp = self.client.post("/api/v1/users/register", json=payload)
-        self.assertEqual(resp.status_code, 409)
+        self.assertEqual(resp.status_code, 409)  # ✅ Expect 409
         self.assertIn("error", resp.get_json())
 
     def test_register_invalid_input(self):
-        payload = {"email": "bad@example.com"}
+        payload = {"email": "opeboy@gmail.com"}  # missing name, password, etc.
         resp = self.client.post("/api/v1/users/register", json=payload)
         self.assertEqual(resp.status_code, 400)

@@ -1,0 +1,90 @@
+:root {
+    --primary-color: #4361ee;
+    --secondary-color: #3f37c9;
+    --accent-color: #4895ef;
+    --danger-color: #f72585;
+    --success-color: #4cc9f0;
+    --light-color: #f8f9fa;
+    --dark-color: #212529;
+    --gray-color: #6c757d;
+    --sidebar-width: 250px;
+}
+/* dashboard.css */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #0a0a0a;
+    color: #d4ff00;
+}
+
+header {
+    background-color: #1a1a1a;
+    padding: 20px;
+    text-align: center;
+    font-size: 2em;
+    font-weight: bold;
+    color: #d4ff00;
+}
+
+.container {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 30px;
+    padding: 20px;
+}
+
+.card {
+    background-color: #111;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(212, 255, 0, 0.2);
+    color: #d4ff00;
+}
+
+.card h3 {
+    margin-top: 0;
+    color: #d4ff00;
+}
+
+form input,
+form select,
+form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1em;
+}
+
+form button {
+    background-color: #d4ff00;
+    color: #0a0a0a;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #c4e100;
+}
+
+#recentExpenses ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#recentExpenses li {
+    margin-bottom: 10px;
+    padding: 10px;
+    background-color: #222;
+    border-left: 5px solid #d4ff00;
+    border-radius: 4px;
+}
+
+canvas {
+    background-color: #0a0a0a;
+    padding: 10px;
+    border-radius: 10px;
+}

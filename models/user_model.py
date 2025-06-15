@@ -1,7 +1,10 @@
 from dataclasses import dataclass
+from typing import Optional
+
+
 @dataclass
 class UserModel:
-    id:str
+    id: Optional[str]
     name: str
     email: str
     phone: str

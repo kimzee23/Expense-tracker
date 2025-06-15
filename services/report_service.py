@@ -11,15 +11,10 @@ class ReportService:
     def create_report(self, request_dto: ReportCreateRequest):
         report_data = request_dto.model_dump()
 
+        report_data["generated_at"] = datetime.now(timezone.utc).isoformat()
 
-        report_data["generated_at"] = datetime.now(timezone.utc)
-        report_data["start_date"] = report_data["start_date"].isoformat()
-        report_data["end_date"] = report_data["end_date"].isoformat()
-        print("Debug report_data", report_data)
-
-
-        report_data["total_expense"] = 0
-        report_data["total_budget"] = 0
+        # Leave start_date and end_date as strings (they are valid ISO strings)
+        # If you do want datetime objects, parse them first
 
         new_id = self.repo.save(report_data)
         model = Report(**report_data)

@@ -16,7 +16,7 @@ def create_report_controller(db):
             data = request.get_json()
             report_req = ReportCreateRequest(**data)
             response_dto = service.create_report(report_req)
-            return jsonify(response_dto.model_dump()), 201
+            return jsonify(response_dto), 201
         except ValidationError as e:
             return jsonify({"error": str(e)}), 400
         except Exception as e:

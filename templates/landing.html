@@ -1,0 +1,66 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}"></link>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">Expense Tracker</a>
+                <div class="nav-links">
+                    <a href="#">Features</a>
+                    <a href="#">Pricing</a>
+                      <a href="{{ url_for('auth.login') }}">Login</a>
+                      <a href="{{ url_for('auth.register') }}">Register</a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1> Track smart, spend wiser, and build the future you deserve!</h1>
+                <p><li>Never wonder where your money went again</li>
+                    <li>Achieve your savings goals faster</li>
+                    <li>Reduce financial stress with clear insights</li>
+                </p>
+                <div class="hero-buttons">
+                    <a href="#" class="btn-primary">Download App</a>
+                    <a href="#" class="btn-secondary">Learn More</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="{{ url_for('static', filename='img/expense.png') }}" alt="Expense toon">
+            </div>
+        </div>
+    </section>
+
+    <section class="partners">
+        <div class="container">
+            <h2>Compatible With</h2>
+            <div class="partner-logos">
+                <img src="{{ url_for('static', filename='img/zelle.png') }}" alt="Zelle">
+                <img src="{{ url_for('static', filename='img/opay.png') }}" alt="opay">
+                <img src="{{ url_for('static', filename='img/moniepoint.png') }}" alt="moniepoint">
+                <img src="{{ url_for('static', filename='img/piggy.png') }}" alt="piggyp">
+                <img src="{{ url_for('static', filename='img/cash.png') }}" alt="cash">
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <div class="section-title">
+                <h2>Banking Made Simple</h2>
+                <p>Experience the future of finance with our innovative features designed for your digital lifestyle.</p>
+            </div>
+            <!-- Feature cards would go here -->
+        </div>
+    </section>
+</body>
+</html>

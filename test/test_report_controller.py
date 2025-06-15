@@ -15,7 +15,7 @@ class TestReportController(unittest.TestCase):
 
     def test_create_report_success(self):
         data = {
-            "user_id": "some-user-id",
+            "user_id": "1234yx",
             "title": "Weekly Summary",
             "description": "Spent a lot this week",
             "start_date": "2024-01-01",
@@ -29,6 +29,26 @@ class TestReportController(unittest.TestCase):
         print("Response JSON:", response.get_json())
         self.assertEqual(response.status_code, 201)
         self.assertIn("title", response.get_json())
+        self.assertIn("generated_at", response.get_json())
+
+    def test_generate_at(self):
+        dataTwo = {
+            "user_id": "123ux",
+            "title": "Weekly Summary",
+            "description": "Spent a lot this week",
+            "start_date": "2024-01-01",
+            "end_date": "2024-01-31",
+            "total_budget": 500.0,
+            "total_expense": 450.0,
+            "total_income": 700.0
+        }
+
+        response = self.app.post("/api/v1/reports/", json=dataTwo)
+        print("Response JSON:", response.get_json())
+        self.assertEqual(response.status_code, 201)
+        self.assertIn("generated_at", response.get_json())
+        print(response.get_json())
+
 
 
     @classmethod
