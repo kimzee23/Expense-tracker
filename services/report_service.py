@@ -4,6 +4,8 @@ from utils.mapper.mapper_report import report_model_to_response_dto
 from models.report_model import Report
 from datetime import datetime, timezone
 
+from collections import defaultdict
+
 class ReportService:
     def __init__(self, repo: ReportRepository):
         self.repo = repo
@@ -13,10 +15,35 @@ class ReportService:
 
         report_data["generated_at"] = datetime.now(timezone.utc).isoformat()
 
-        # Leave start_date and end_date as strings (they are valid ISO strings)
-        # If you do want datetime objects, parse them first
-
         new_id = self.repo.save(report_data)
         model = Report(**report_data)
 
         return report_model_to_response_dto(model, new_id)
+
+    def generate_report(self, user_id: str):
+        expenses = self.repo.get_expenses_by_user_id(user_id)  # You must implement this
+
+
+        total_expense = sum(e["amount"] for e in expenses)
+        recent_expenses = sorted(expenses, key=lambda e: e["date"], reverse=True)[:5]
+
+        expenses_by_date = defaultdict(float)
+        for e in expenses:
+            date = e["date"].split("T")[0]  # Just the date part
+            expenses_by_date[date] += e["amount"]
+        expenses_by_category = defaultdict(float)
+        for e in expenses:
+            expenses_by_category[e["category"]] += e["amount"]
+
+        expenses_by_hour = defaultdict(float)
+        for e in expenses:
+            dt = datetime.fromisoformat(e["date"])
+            expenses_by_hour[dt.hour] += e["amount"]
+
+        return {
+            "total_expense": total_expense,
+            "recent_expenses": recent_expenses,
+            "expenses_by_date": [{"date": k, "total": v} for k, v in expenses_by_date.items()],
+            "expenses_by_category": expenses_by_category,
+            "expenses_by_hour": [{"hour": k, "total": v} for k, v in expenses_by_hour.items()]
+        }

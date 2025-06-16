@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 from dtos.request.budget_request import BudgetCreateRequest
 from services.budget_service import BudgetService
 from exceptions.not_found_exception import NotFoundException
+from pydantic import ValidationError
 
 def create_budget_controller(db):
     budget_controller = Blueprint("budget_controller", __name__)
@@ -11,10 +12,11 @@ def create_budget_controller(db):
     def create_budget():
         try:
             data = request.get_json()
-            print("Received data:", data)
             request_dto = BudgetCreateRequest(**data)
-            budget_id = budget_service.create_budget(request_dto)
-            return jsonify({"budget_id": budget_id}), 201
+            result = budget_service.create_budget(request_dto)
+            return jsonify({"message": "Budget saved", "result": result}), 201
+        except ValidationError as e:
+            return jsonify({"error": str(e)}), 400
         except Exception as e:
             import traceback
             traceback.print_exc()
@@ -24,7 +26,7 @@ def create_budget_controller(db):
     def get_budget_by_user_id(user_id):
         try:
             budget = budget_service.get_budget_by_user_id(user_id)
-            return jsonify(budget if isinstance(budget, dict) else budget.model_dump()), 200
+            return jsonify(budget), 200
         except NotFoundException as e:
             return jsonify({"error": str(e)}), 404
         except Exception as e:

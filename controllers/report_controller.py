@@ -22,4 +22,18 @@ def create_report_controller(db):
         except Exception as e:
             return jsonify({"error": str(e)}), 500
 
+    @report_bp.route("/", methods=["GET"])
+    def get_report_by_user_id():
+        try:
+            user_id = request.args.get("user_id")
+            if not user_id:
+                return jsonify({"error": "Missing user_id"}), 400
+
+            report = service.generate_report(user_id)
+            return jsonify(report), 200
+        except Exception as e:
+            import traceback
+            traceback.print_exc()
+            return jsonify({"error": str(e)}), 500
+
     return report_bp

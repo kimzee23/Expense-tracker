@@ -1,90 +1,146 @@
 :root {
-    --primary-color: #4361ee;
-    --secondary-color: #3f37c9;
-    --accent-color: #4895ef;
-    --danger-color: #f72585;
-    --success-color: #4cc9f0;
-    --light-color: #f8f9fa;
-    --dark-color: #212529;
-    --gray-color: #6c757d;
-    --sidebar-width: 250px;
+  --lemon: #d4ff00;
+  --dark-bg: #0a0a0a;
+  --card-bg: #111;
+  --hover: #c2eb00;
+  --light: #f0f0f0;
 }
-/* dashboard.css */
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #0a0a0a;
-    color: #d4ff00;
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: var(--dark-bg);
+  color: var(--lemon);
+  display: flex;
 }
 
-header {
-    background-color: #1a1a1a;
-    padding: 20px;
-    text-align: center;
-    font-size: 2em;
-    font-weight: bold;
-    color: #d4ff00;
+.dashboard-container {
+  display: flex;
+  width: 100%;
+  height: 100vh;
 }
 
-.container {
-    display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 30px;
-    padding: 20px;
+.sidebar {
+  width: 250px;
+  background-color: #141414;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sidebar h2 {
+  color: var(--lemon);
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.sidebar nav ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar nav ul li {
+  margin-bottom: 15px;
+}
+
+.nav-link {
+  color: var(--light);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.nav-link:hover {
+  color: var(--lemon);
+}
+
+.logout-button {
+  background: transparent;
+  border: 1px solid var(--lemon);
+  color: var(--lemon);
+  padding: 10px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.logout-button:hover {
+  background-color: var(--lemon);
+  color: var(--dark-bg);
+}
+
+.content {
+  flex: 1;
+  padding: 40px;
+  overflow-y: auto;
 }
 
 .card {
-    background-color: #111;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(212, 255, 0, 0.2);
-    color: #d4ff00;
+  background: var(--card-bg);
+  padding: 30px;
+  border-radius: 10px;
+  margin-bottom: 30px;
+  box-shadow: 0 0 10px rgba(212, 255, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card h3 {
-    margin-top: 0;
-    color: #d4ff00;
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 0 20px rgba(212, 255, 0, 0.2);
 }
 
-form input,
-form select,
-form button {
-    width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 5px;
-    border: none;
-    font-size: 1em;
+input,
+select,
+button {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  border: none;
+  border-radius: 5px;
+  font-size: 1em;
 }
 
-form button {
-    background-color: #d4ff00;
-    color: #0a0a0a;
-    font-weight: bold;
-    cursor: pointer;
+input, select {
+  background-color: #222;
+  color: var(--lemon);
 }
 
-form button:hover {
-    background-color: #c4e100;
+.btn-green {
+  background-color: var(--lemon);
+  color: var(--dark-bg);
+  font-weight: bold;
+  transition: background 0.3s;
 }
 
-#recentExpenses ul {
-    list-style-type: none;
-    padding: 0;
+.btn-green:hover {
+  background-color: var(--hover);
 }
 
-#recentExpenses li {
-    margin-bottom: 10px;
-    padding: 10px;
-    background-color: #222;
-    border-left: 5px solid #d4ff00;
-    border-radius: 4px;
+#recentExpensesList > div {
+  background: #222;
+  margin: 5px 0;
+  padding: 10px;
+  border-left: 5px solid var(--lemon);
+  border-radius: 5px;
 }
 
 canvas {
-    background-color: #0a0a0a;
-    padding: 10px;
-    border-radius: 10px;
+  background-color: #0a0a0a;
+  border-radius: 10px;
+  margin-top: 20px;
+}
+
+.animate-slide {
+  animation: slideIn 0.6s ease-in-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

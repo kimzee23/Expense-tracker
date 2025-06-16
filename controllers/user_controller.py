@@ -11,7 +11,7 @@ from repositories.user_repository import userRepository
 from exceptions.invaild_input_exception import InvalidInputException
 from exceptions.user_not_found_exception import UserNotFoundException
 from exceptions.incorrect_password_exception import IncorrectPasswordException
-from exceptions.user_already_exits_exception import UserAlreadyExistsException
+from exceptions.UserAlreadyExitsException import UserAlreadyExistsException
 from pydantic import ValidationError
 
 user_bp = Blueprint("user", __name__)

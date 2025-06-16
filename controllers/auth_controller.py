@@ -1,14 +1,14 @@
 from flask import Blueprint, request, render_template, redirect, session, jsonify
 from dtos.request.user_register_request import UserRegisterRequest
 from dtos.request.user_Login_Request import UserLoginRequest
-from exceptions.user_already_exits_exception import UserAlreadyExistsException
+from exceptions.UserAlreadyExitsException import UserAlreadyExistsException
 from services.user_service import UserService
 from repositories.user_repository import userRepository
 from exceptions import (
     invaild_input_exception,
     user_not_found_exception,
     incorrect_password_exception,
-    user_already_exits_exception
+    UserAlreadyExitsException
 )
 from pydantic import ValidationError
 
@@ -37,14 +37,16 @@ def create_auth_controller(db):
         try:
             data = request.form
             register_req = UserRegisterRequest(
-                username=data.get('username'),
+                name=data.get('name'),
                 email=data.get('email'),
+                age=int(data.get('age')),
+                phone=data.get('phone'),
                 password=data.get('password')
             )
-            user = service.register(register_req)
-            session['user_id'] = str(user.id)
+            user_id = service.register(register_req)
+            session['user_id'] = user_id
             return redirect('/dashboard')
-        except (ValidationError, user_already_exits_exception, Exception):
+        except (ValidationError, UserAlreadyExistsException, Exception):
             return render_template('register.html', error="Registration failed")
 
     # Form-based Login
@@ -58,19 +60,20 @@ def create_auth_controller(db):
                 email=data.get('email'),
                 password=data.get('password')
             )
-            user = service.login(login_req)
-            session['user_id'] = str(user.id)
+            user_id = service.login(login_req)
+            session['user_id'] = user_id
             return redirect('/dashboard')
         except (ValidationError, user_not_found_exception, incorrect_password_exception, Exception):
             return render_template('login.html', error="Invalid login")
 
-    # JSON API - Register via JS fetch()
+
     @auth_bp.route('/api/v1/users/register', methods=['POST'])
     def api_register():
         if not request.is_json:
             return jsonify({"error": "Request must be JSON"}), 400
         try:
             data = request.get_json()
+            print("Incoming data:", data)
             register_req = UserRegisterRequest(
                 name=data.get('name'),
                 email=data.get('email'),
@@ -78,15 +81,16 @@ def create_auth_controller(db):
                 phone=data.get('phone'),
                 age=data.get('age')
             )
-            user = service.register(register_req)
-            session['user_id'] = str(user.id)
+            user_id = service.register(register_req)
+            session['user_id'] = user_id
             return jsonify({"message": "Registration successful", "redirect": "/dashboard"}), 201
         except (ValidationError, UserAlreadyExistsException) as e:
             return jsonify({"error": str(e)}), 400
-        except Exception as e:
+        except Exception as error:
+            print("Unexpected error",error)
             return jsonify({"error": "Something went wrong"}), 500
 
-    # JSON API - Login via JS fetch()
+
     @auth_bp.route('/api/v1/users/login', methods=['POST'])
     def api_login():
         if not request.is_json:
@@ -97,8 +101,8 @@ def create_auth_controller(db):
                 email=data.get('email'),
                 password=data.get('password')
             )
-            user = service.login(login_req)
-            session['user_id'] = str(user.id)
+            user_id = service.login(login_req)
+            session['user_id'] = user_id
             return jsonify({"message": "Login successful", "redirect": "/dashboard"}), 200
         except (ValidationError, user_not_found_exception, incorrect_password_exception) as e:
             return jsonify({"error": str(e)}), 400

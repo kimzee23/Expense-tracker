@@ -1,58 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expense Tracker Dashboard</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-    <nav class="navbar">
-        <h1>Expense Tracker</h1>
-        <button id="logoutBtn">Logout</button>
-    </nav>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <h2>Expense Tracker</h2>
+      <nav>
+        <ul>
+          <li><a href="#overview">Overview</a></li>
+          <li><a href="#add">Add Expense</a></li>
+          <li><a href="#charts">Analytics</a></li>
+        </ul>
+      </nav>
+      <button id="logoutBtn">Logout</button>
+    </aside>
 
-    <main>
-        <section class="budget-overview">
-            <h2>Budget Overview</h2>
-            <p id="totalBudget">Total Budget: $0</p>
-            <p id="totalSpent">Total Spent: $0</p>
-        </section>
+    <main class="content">
+      <section class="card" id="budgetSection">
+        <h3>Set Monthly Budget</h3>
+        <form id="budgetForm">
+          <input type="number" id="budgetInput" placeholder="Enter budget amount (₦)" required />
+          <button type="submit">Save Budget</button>
+        </form>
+      </section>
+      <section class="card" id="overview">
+        <h3>Budget Overview</h3>
+        <p id="budgetAmount">Total Budget: ₦0</p>
+        <p id="expensesTotal">Total Spent: ₦0</p>
+        <p id="remainingBudget">Remaining: ₦0</p>
+      </section>
 
-        <section class="expense-form">
-            <h3>Add Expense</h3>
-            <form id="expenseForm">
-                <select id="categorySelect" required>
-                    <option value="">Select Category</option>
-                    <option value="Food">Food</option>
-                    <option value="Transport">Transport</option>
-                    <option value="Utilities">Utilities</option>
-                    <option value="Entertainment">Entertainment</option>
-                    <option value="Healthcare">Healthcare</option>
-                    <option value="Other">Other</option>
-                </select>
+      <!-- 👇 Add Expense -->
+      <section class="card" id="add">
+        <h3>Add New Expense</h3>
+        <form id="addExpenseForm">
+          <input type="text" name="title" placeholder="Title" required />
+          <input type="number" name="amount" placeholder="Amount" required />
+          <select name="category" required>
+            <option value="">Select Category</option>
+            <option value="Food">Food</option>
+            <option value="Transport">Transport</option>
+            <option value="Utilities">Utilities</option>
+            <option value="Entertainment">Entertainment</option>
+            <option value="Healthcare">Healthcare</option>
+            <option value="Other">Other</option>
+          </select>
+          <button type="submit">Add Expense</button>
+        </form>
+      </section>
+      <section class="card" id="recentExpenses">
+        <h3>Recent Expenses</h3>
+        <div id="recentExpensesList"></div>
+      </section>
 
-                <input type="text" id="customCategory" placeholder="Custom Category" style="display:none;">
-
-                <input type="number" id="amount" placeholder="Amount" required>
-                <input type="text" id="description" placeholder="Description">
-                <button type="submit">Add Expense</button>
-            </form>
-        </section>
-
-        <section class="recent-expenses">
-            <h3>Recent Expenses</h3>
-            <ul id="expensesList"></ul>
-        </section>
-
-        <section class="charts">
-            <h3>Spending Overview</h3>
-            <canvas id="lineChart"></canvas>
-            <canvas id="categoryChart"></canvas>
-        </section>
+      <section class="card" id="charts">
+        <h3>Analytics</h3>
+        <canvas id="lineChart"></canvas>
+        <canvas id="categoryChart"></canvas>
+        <canvas id="timeChart"></canvas>
+      </section>
     </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+  </div>
+  <script>
+    if (!localStorage.getItem("userId")) {
+      localStorage.setItem("userId", "demo-user-id-123");
+    }
+  </script>
+  <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 from models.user_model import UserModel
-from exceptions.user_already_exits_exception import UserAlreadyExistsException
+from exceptions.UserAlreadyExitsException import UserAlreadyExistsException
 from utils.mapper.user_mapper import document_to_user_model_dto, user_register_request_to_document
 from werkzeug.security import check_password_hash, generate_password_hash
 from exceptions.incorrect_password_exception import IncorrectPasswordException
