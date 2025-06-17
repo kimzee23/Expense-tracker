@@ -3,7 +3,7 @@ from pymongo import MongoClient
 from controllers.auth_controller import create_auth_controller
 from controllers.user_controller import create_user_controller
 from controllers.budget_controller import create_budget_controller
-from controllers.expense_controller import create_expense
+from controllers.expense_controller import create_expense_controller
 from controllers.report_controller import create_report_controller
 
 
@@ -26,7 +26,7 @@ def create_app(test_db=None):
     app.register_blueprint(create_user_controller(db), url_prefix="/api/v1/users")
     app.register_blueprint(create_budget_controller(db), url_prefix="/api/v1/budgets")
     app.register_blueprint(create_report_controller(db), url_prefix="/api/v1/reports")
-    app.register_blueprint(create_expense(db), url_prefix="/api/v1/expenses")
+    app.register_blueprint(create_expense_controller(db), url_prefix="/api/v1/expenses")
 
     # Landing Page Route
     @app.route("/")

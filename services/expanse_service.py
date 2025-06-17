@@ -1,16 +1,14 @@
 from typing import List
-
 from dtos.request.expense_request import ExpenseCreateRequest, ExpenseUpdateRequest
 from dtos.response.expense_response import ExpenseResponse
-from exceptions.expense_exception import ExpenseNotFound
-from exceptions.not_found_exception import NotFoundException
 from models.expense_model import Expense
 from repositories.expanse_repository import ExpenseRepository
 from utils.mapper.expense_mapper import expense_model_to_response_dto, document_to_expense_model
+from exceptions.expense_exception import ExpenseNotFound
 
 class ExpenseService:
-    def __init__(self, repo=None):
-        self.repo = repo or ExpenseRepository()
+    def __init__(self, repo: ExpenseRepository):
+        self.repo = repo
 
     def create_expense(self, request_dto: ExpenseCreateRequest) -> str:
         expense = Expense(
@@ -18,11 +16,12 @@ class ExpenseService:
             amount=request_dto.amount,
             category=request_dto.category.strip(),
             date=request_dto.date,
+            description=request_dto.description,
             user_id=request_dto.user_id.strip()
         )
         return self.repo.create_expense(expense.dict())
 
-    def get_expenses(self, user_id: str) -> List[Expense]:
+    def get_expenses(self, user_id: str) -> list[ExpenseResponse]:
         documents = self.repo.get_expense_by_user_id(user_id)
         return [
             expense_model_to_response_dto(document_to_expense_model(doc))

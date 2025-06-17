@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const data = await response.json();
                 if (response.ok) {
+                    // Save user ID in localStorage
+                    localStorage.setItem("user_id", data.user_id);
                     window.location.href = "/dashboard";
                 } else {
                     errorDiv.textContent = data.error || "Login failed.";
@@ -48,6 +50,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 const data = await response.json();
                 if (response.ok) {
+                    // Save user ID in localStorage
+                    localStorage.setItem("user_id", data.user_id);
                     window.location.href = "/dashboard";
                 } else {
                     errorDiv.textContent = data.error || "Registration failed.";
@@ -57,4 +61,17 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+    const track = document.querySelector('.slider-track');
+    const slides = document.querySelectorAll('.slide');
+
+
+    track.innerHTML += track.innerHTML;
+
+    const container = document.querySelector('.slider-container');
+    container.addEventListener('mouseenter', () => {
+        track.style.animationPlayState = 'paused';
+    });
+    container.addEventListener('mouseleave', () => {
+        track.style.animationPlayState = 'running';
+    });
 });

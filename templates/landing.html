@@ -4,7 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Expense Tracker</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}"></link>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
@@ -14,8 +15,8 @@
                 <div class="nav-links">
                     <a href="#">Features</a>
                     <a href="#">Pricing</a>
-                      <a href="{{ url_for('auth.login') }}">Login</a>
-                      <a href="{{ url_for('auth.register') }}">Register</a>
+                    <a href="{{ url_for('auth.login') }}">Login</a>
+                    <a href="#">Blog</a>
                 </div>
             </nav>
         </div>
@@ -24,31 +25,54 @@
     <section class="hero">
         <div class="container">
             <div class="hero-content">
-                <h1> Track smart, spend wiser, and build the future you deserve!</h1>
-                <p><li>Never wonder where your money went again</li>
+                <h1>Track smart, spend wiser, and build the future you deserve!</h1>
+                <ul>
+                    <li>Never wonder where your money went again</li>
                     <li>Achieve your savings goals faster</li>
                     <li>Reduce financial stress with clear insights</li>
-                </p>
+                </ul>
                 <div class="hero-buttons">
-                    <a href="#" class="btn-primary">Download App</a>
+                    <a href="{{ url_for('auth.register') }}" class="btn-primary">Register Now</a>
                     <a href="#" class="btn-secondary">Learn More</a>
                 </div>
             </div>
             <div class="hero-image">
-                <img src="{{ url_for('static', filename='img/expense.png') }}" alt="Expense toon">
+                <img src="{{ url_for('static', filename='img/expense toons.png') }}" alt="Expense toon">
             </div>
         </div>
     </section>
 
     <section class="partners">
         <div class="container">
-            <h2>Compatible With</h2>
-            <div class="partner-logos">
-                <img src="{{ url_for('static', filename='img/zelle.png') }}" alt="Zelle">
-                <img src="{{ url_for('static', filename='img/opay.png') }}" alt="opay">
-                <img src="{{ url_for('static', filename='img/moniepoint.png') }}" alt="moniepoint">
-                <img src="{{ url_for('static', filename='img/piggy.png') }}" alt="piggyp">
-                <img src="{{ url_for('static', filename='img/cash.png') }}" alt="cash">
+            <h2>Associate With</h2>
+            <div class="slider-container">
+                <div class="slider-track">
+                    <div class="slide">
+                        <img src="{{ url_for('static', filename='img/zelle.png') }}" alt="Zelle">
+                    </div>
+                    <div class="slide">
+                        <img src="{{ url_for('static', filename='img/opay.png') }}" alt="Opay">
+                    </div>
+                    <div class="slide">
+                        <img src="{{ url_for('static', filename='img/moniepoint.png') }}" alt="Moniepoint">
+                    </div>
+                    <div class="slide">
+                        <img src="{{ url_for('static', filename='img/semicolon.png') }}" alt="Piggyp">
+                    </div>
+                    <div class="slide">
+                        <img src="{{ url_for('static', filename='img/cash.png') }}" alt="Cash">
+                    </div>
+                    <!-- Duplicates for infinite loop -->
+                    <div class="slide">
+                        <img src="{{ url_for('static', filename='img/zelle.png') }}" alt="Zelle">
+                    </div>
+                    <div class="slide">
+                        <img src="{{ url_for('static', filename='img/opay.png') }}" alt="Opay">
+                    </div>
+                    <div class="slide">
+                        <img src="{{ url_for('static', filename='img/moniepoint.png') }}" alt="Moniepoint">
+                    </div>
+                </div>
             </div>
         </div>
     </section>
@@ -56,11 +80,121 @@
     <section class="features">
         <div class="container">
             <div class="section-title">
-                <h2>Banking Made Simple</h2>
-                <p>Experience the future of finance with our innovative features designed for your digital lifestyle.</p>
+                <h2>Save and Spend Wisely</h2>
+                <p>Your money, your rules—finally, Kimz expense tracker that gets you.</p>
             </div>
-            <!-- Feature cards would go here -->
         </div>
     </section>
-</body>
-</html>
+
+    <div class="container">
+        <div class="footer-content">
+            <h2 class="footer-title">Master your expenses with the ultimate tracking experience.</h2>
+            <section class="testimonials">
+                <div class="container">
+                    <div class="section-title">
+                        <h2>Trusted by Thousands</h2>
+                        <p>Join our community of savvy savers and smart spenders</p>
+                    </div>
+
+                    <div class="testimonial-cards">
+                        <div class="testimonial-card">
+                            <div class="rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <p class="quote">"This app completely transformed how I manage my finances. Saved $5,000 in just 3 months!"</p>
+                            <div class="user">
+                                <img src="{{ url_for('static', filename='img/matthew.jpg') }}" alt="Matthew">
+                                <div class="user-info">
+                                    <h4>Matthew O.</h4>
+                                    <p>Marketing Director</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="testimonial-card">
+                            <div class="rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <p class="quote">"Finally an expense tracker that actually understands my spending habits. The insights are priceless."</p>
+                            <div class="user">
+                                <img src="{{ url_for('static', filename='img/Lawo.jpg') }}" alt="Lawo">
+                                <div class="user-info">
+                                    <h4>Lawo O.</h4>
+                                    <p>Freelance Developer</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="testimonial-card">
+                            <div class="rating">
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                                <span class="star">★</span>
+                            </div>
+                            <p class="quote">"I've tried every budgeting app out there. This one actually sticks because it's so simple yet powerful."</p>
+                            <div class="user">
+                                <img src="{{ url_for('static', filename='img/Samlarry.jpg') }}" alt="Samlarry">
+                                <div class="user-info">
+                                    <h4>Samlarry K.</h4>
+                                    <p>Software Engineer</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="cta-section">
+                <div class="container">
+                    <div class="cta-content">
+                        <h2>Ready to take control of your finances?</h2>
+                        <p>Join thousands of happy users who are saving smarter every day</p>
+                        <div class="cta-buttons">
+                            <a href="{{ url_for('auth.register') }}" class="btn-primary">Get Started Free</a>
+                            <a href="#" class="btn-secondary">See How It Works</a>
+                        </div>
+{#                         <div class="cta-image">#}
+{#                        <img src="{{ url_for('static', filename='img/app.jpg') }}" alt="Expense Tracker App Preview">#}
+{#                    </div>#}
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <footer class="footer lemon-footer">
+        <div class="container">
+            <div class="footer-section">
+                <h3>Semicolon Africa</h3>
+                <p><strong>Lagos</strong></p>
+                <div style="position: relative; padding-bottom: 75%; height: 0; overflow: hidden;">
+                    <iframe style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border:0;" loading="lazy" allowfullscreen src="https://maps.google.com/maps?q=Parkview+Estate%2C+Ikoyi+near++prestigious+Banana+Island&output=embed"></iframe>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3>Home of Tracking </h3>
+                <p>Download the Expanse Tracker app to navigate the parks on the go.</p>
+                <div class="app-download">
+                    <a href="#" class="app-link">App Store</a>
+                    <a href="#" class="app-link">Google Play</a>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <a href="#">Accessibility</a>
+                <a href="#">Privacy Policy</a>
+                <a href="#">BTC</a>
+                <a href="#">MIDDLE</a>
+                <a href="#">CONNECT with investors</a>
+                <a href="#">

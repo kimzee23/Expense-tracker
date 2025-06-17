@@ -8,7 +8,7 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="dashboard-container">
+  <div class="dashboard-container" id="dashboardContainer">
     <aside class="sidebar">
       <h2>Expense Tracker</h2>
       <nav>
@@ -18,7 +18,7 @@
           <li><a href="#charts">Analytics</a></li>
         </ul>
       </nav>
-      <button id="logoutBtn">Logout</button>
+      <button id="logoutBtn" type="button"><a href="{{ url_for('landing') }}">Logout</a> </button>
     </aside>
 
     <main class="content">
@@ -29,6 +29,7 @@
           <button type="submit">Save Budget</button>
         </form>
       </section>
+
       <section class="card" id="overview">
         <h3>Budget Overview</h3>
         <p id="budgetAmount">Total Budget: ₦0</p>
@@ -36,12 +37,13 @@
         <p id="remainingBudget">Remaining: ₦0</p>
       </section>
 
-      <!-- 👇 Add Expense -->
       <section class="card" id="add">
         <h3>Add New Expense</h3>
         <form id="addExpenseForm">
           <input type="text" name="title" placeholder="Title" required />
           <input type="number" name="amount" placeholder="Amount" required />
+          <textarea name="description" id="description" required></textarea>
+
           <select name="category" required>
             <option value="">Select Category</option>
             <option value="Food">Food</option>
@@ -54,11 +56,13 @@
           <button type="submit">Add Expense</button>
         </form>
       </section>
+p
       <section class="card" id="recentExpenses">
         <h3>Recent Expenses</h3>
         <div id="recentExpensesList"></div>
       </section>
 
+      <!-- The Analytics Charts -->
       <section class="card" id="charts">
         <h3>Analytics</h3>
         <canvas id="lineChart"></canvas>
@@ -67,11 +71,8 @@
       </section>
     </main>
   </div>
-  <script>
-    if (!localStorage.getItem("userId")) {
-      localStorage.setItem("userId", "demo-user-id-123");
-    }
-  </script>
+
+
   <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
 </body>
 </html>

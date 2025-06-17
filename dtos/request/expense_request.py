@@ -1,8 +1,5 @@
-
 from datetime import datetime
-
 from pydantic import BaseModel, Field
-
 
 class ExpenseCreateRequest(BaseModel):
     title: str = Field(min_length=1)
@@ -17,3 +14,4 @@ class ExpenseUpdateRequest(BaseModel):
     amount: float | None = None
     category: str | None = None
     date: datetime | None = None
+    description: str | None = None

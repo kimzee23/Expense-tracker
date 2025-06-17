@@ -43,6 +43,10 @@ body {
 .sidebar nav ul li {
   margin-bottom: 15px;
 }
+.sidebar nav ul li a {
+  text-decoration: none;
+  color: var(--lemon);
+}
 
 .nav-link {
   color: var(--light);
