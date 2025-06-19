@@ -41,12 +41,10 @@ document.addEventListener("DOMContentLoaded", () => {
       expensesTotalEl.textContent = `Total Spent: ₦${spent}`;
       remainingBudgetEl.textContent = `Remaining: ₦${remain}`;
 
-      // Render recent expenses
       recentExpensesList.innerHTML = (report.recent_expenses || [])
         .map(e => `<div class="expense-item"><strong>${e.title}</strong> - ₦${e.amount} <em>(${e.category})</em></div>`)
         .join("");
 
-      // Line chart: Expenses by Date
       if (lineCtx && report.expenses_by_date?.length) {
         lineChart?.destroy();
         lineChart = new Chart(lineCtx, {
@@ -65,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // Doughnut chart: Expenses by Category
+
       if (categoryCtx && report.expenses_by_category && Object.keys(report.expenses_by_category).length > 0) {
         categoryChart?.destroy();
         categoryChart = new Chart(categoryCtx, {
@@ -81,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      // Bar chart: Expenses by Hour
+
       if (timeCtx && report.expenses_by_hour?.length) {
         timeChart?.destroy();
         timeChart = new Chart(timeCtx, {

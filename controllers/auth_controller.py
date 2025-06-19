@@ -23,10 +23,11 @@ def create_auth_controller(db):
     def dashboard():
         if 'user_id' not in session:
             return redirect('/login')
-        return render_template('dashboard.html')
+        user_name = session.get('user_name', 'User')
+        return render_template('dashboard.html',user_name=user_name)
 
     @auth_bp.route('/register', methods=['GET', 'POST'])
-    def register():  # ✅ Matches url_for('auth.register')
+    def register():
         if request.method == 'GET':
             return render_template('register.html')
         try:
@@ -66,6 +67,7 @@ def create_auth_controller(db):
             )
             user_id = service.register(register_req)
             session['user_id'] = str(user_id)
+            session['user_name'] = register_req.name
             return jsonify({
                 "message": "Registration successful",
                 "user_id": str(user_id)
@@ -77,7 +79,7 @@ def create_auth_controller(db):
             return jsonify({"error": "Something went wrong"}), 500
 
     @auth_bp.route('/login', methods=['GET', 'POST'])
-    def login():  # ✅ Matches url_for('auth.login')
+    def login():
         if request.method == 'GET':
             return render_template('login.html')
         try:

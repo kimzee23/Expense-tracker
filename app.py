@@ -20,8 +20,8 @@ def create_app(test_db=None):
     else:
         db = test_db
 
-    # Register blueprints
-    app.register_blueprint(create_auth_controller(db), url_prefix="")  # No prefix so /dashboard works
+
+    app.register_blueprint(create_auth_controller(db), url_prefix="")
     app.register_blueprint(create_user_controller(db), url_prefix="/api/v1/users")
     app.register_blueprint(create_budget_controller(db), url_prefix="/api/v1/budgets")
     app.register_blueprint(create_expense_controller(db), url_prefix="/api/v1/expenses")

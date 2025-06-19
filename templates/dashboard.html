@@ -11,6 +11,15 @@
   <div class="dashboard-container" id="dashboardContainer">
     <aside class="sidebar">
       <h2>Expense Tracker</h2>
+        <div class="welcome-message" style="margin: 20px; font-size: 1.5em;">
+        <h2>
+            {% if user_name %}
+                Welcome back, {{ user_name }}!
+            {% else %}
+                Welcome to your dashboard!
+            {% endif %}
+        </h2>
+    </div>
       <nav>
         <ul>
           <li><a href="#overview">Overview</a></li>
