@@ -10,6 +10,20 @@ class UserService:
     def __init__(self, user_repo):
         self.user_repo = user_repo
 
+    def register(self, register_request) -> str:
+        if not register_request.name or not register_request.email or not register_request.password:
+            raise InvalidInputException("You need to fill in all fields pal")
+        existing_user = self.user_repo.find_by_email(register_request.email.strip())
+        if existing_user:
+            raise UserAlreadyExistsException("User already exists")
+
+        hashed_password = generate_password_hash(register_request.password.strip())
+        user_document = user_register_request_to_document(register_request)
+        user_document["password"] = hashed_password
+
+        user_id = self.user_repo.save(user_document)
+        return str(user_id)
+
     def login(self, login_request):
         login_request.email = login_request.email.strip()
         if not login_request.email or not login_request.password:
@@ -23,20 +37,4 @@ class UserService:
         if not check_password_hash(user_model.password, login_request.password):
             raise IncorrectPasswordException("Incorrect password")
 
-        return user_model
-
-    def register(self, register_request) -> str:
-        if not register_request.name or not register_request.email or not register_request.password:
-            raise InvalidInputException("You need to fill in all fields pal")
-
-        existing_user = self.user_repo.find_by_email(register_request.email.strip())
-        if existing_user:
-            raise UserAlreadyExistsException("User already exists")
-
-        # Hash password and prepare document
-        hashed_password = generate_password_hash(register_request.password.strip())
-        user_document = user_register_request_to_document(register_request)
-        user_document["password"] = hashed_password
-
-        user_id = self.user_repo.save(user_document)
-        return str(user_id)
+        return str(user_model.id)

@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   const userId = localStorage.getItem("user_id");
+  console.log("Current logged in user:", userId);
 
   if (!userId) {
     console.warn("No user_id found. Redirecting...");
@@ -10,12 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const dashboardReady = document.getElementById("dashboardContainer");
   const budgetForm = document.getElementById("budgetForm");
   const budgetInput = document.getElementById("budgetInput");
-
   const budgetAmountEl = document.getElementById("budgetAmount");
   const expensesTotalEl = document.getElementById("expensesTotal");
   const remainingBudgetEl = document.getElementById("remainingBudget");
   const recentExpensesList = document.getElementById("recentExpensesList");
-
+  const expenseForm = document.getElementById("addExpenseForm");
+  const logoutBtn = document.getElementById("logoutBtn");
   const lineCtx = document.getElementById("lineChart")?.getContext("2d");
   const categoryCtx = document.getElementById("categoryChart")?.getContext("2d");
   const timeCtx = document.getElementById("timeChart")?.getContext("2d");
@@ -32,22 +33,22 @@ document.addEventListener("DOMContentLoaded", () => {
       const budget = await budgetRes.json();
       const report = await reportRes.json();
 
-      const total = budget.amount || 0;
+      const total = budget?.amount ?? 0;
       const spent = report.total_expense || 0;
       const remain = total - spent;
 
-      if (budgetAmountEl) budgetAmountEl.textContent = `Total Budget: ₦${total}`;
-      if (expensesTotalEl) expensesTotalEl.textContent = `Total Spent: ₦${spent}`;
-      if (remainingBudgetEl) remainingBudgetEl.textContent = `Remaining: ₦${remain}`;
+      budgetAmountEl.textContent = `Total Budget: ₦${total}`;
+      expensesTotalEl.textContent = `Total Spent: ₦${spent}`;
+      remainingBudgetEl.textContent = `Remaining: ₦${remain}`;
 
-      if (recentExpensesList) {
-        recentExpensesList.innerHTML = (report.recent_expenses || [])
-          .map(e => `<div class="expense-item"><strong>${e.title}</strong> - ₦${e.amount} <em>(${e.category})</em></div>`)
-          .join("");
-      }
+      // Render recent expenses
+      recentExpensesList.innerHTML = (report.recent_expenses || [])
+        .map(e => `<div class="expense-item"><strong>${e.title}</strong> - ₦${e.amount} <em>(${e.category})</em></div>`)
+        .join("");
 
-      if (lineCtx && report.expenses_by_date) {
-        if (lineChart) lineChart.destroy();
+      // Line chart: Expenses by Date
+      if (lineCtx && report.expenses_by_date?.length) {
+        lineChart?.destroy();
         lineChart = new Chart(lineCtx, {
           type: "line",
           data: {
@@ -64,51 +65,49 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-      if (categoryCtx && report.expenses_by_category) {
-        const categories = Object.keys(report.expenses_by_category);
-        const categoryData = Object.values(report.expenses_by_category);
-        if (categoryChart) categoryChart.destroy();
+      // Doughnut chart: Expenses by Category
+      if (categoryCtx && report.expenses_by_category && Object.keys(report.expenses_by_category).length > 0) {
+        categoryChart?.destroy();
         categoryChart = new Chart(categoryCtx, {
           type: "doughnut",
           data: {
-            labels: categories,
+            labels: Object.keys(report.expenses_by_category),
             datasets: [{
               label: "Spending by Category",
-              data: categoryData,
+              data: Object.values(report.expenses_by_category),
               backgroundColor: ["#d4ff00", "#4caf50", "#ff9800", "#00bcd4", "#e91e63", "#9c27b0"]
             }]
           }
         });
       }
 
-      if (timeCtx && report.expenses_by_hour) {
-        const hourLabels = report.expenses_by_hour.map(e => `${e.hour}:00`);
-        const hourValues = report.expenses_by_hour.map(e => e.total);
-        if (timeChart) timeChart.destroy();
+      // Bar chart: Expenses by Hour
+      if (timeCtx && report.expenses_by_hour?.length) {
+        timeChart?.destroy();
         timeChart = new Chart(timeCtx, {
           type: "bar",
           data: {
-            labels: hourLabels,
+            labels: report.expenses_by_hour.map(e => `${e.hour}:00`),
             datasets: [{
               label: "Spending by Time of Day",
-              data: hourValues,
+              data: report.expenses_by_hour.map(e => e.total),
               backgroundColor: "#d4ff00"
             }]
           }
         });
       }
+
     } catch (err) {
       console.error("Dashboard data fetch error:", err);
     }
   }
 
-  // === Submit Budget Form ===
   if (budgetForm) {
     budgetForm.addEventListener("submit", async (e) => {
       e.preventDefault();
-      const amount = parseFloat(budgetInput.value);
-      if (isNaN(amount)) {
-        alert("Enter a valid budget amount.");
+      const amount = parseFloat(budgetInput.value.trim());
+      if (isNaN(amount) || amount <= 0) {
+        alert("Please enter a valid budget amount.");
         return;
       }
 
@@ -118,24 +117,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
       const payload = {
         user_id: userId,
-        amount: amount,
+        amount,
         start_date: today.toISOString(),
         end_date: nextMonth.toISOString()
       };
 
       try {
-        const res = await fetch("/api/v1/budgets", {
+        const res = await fetch("/api/v1/budgets/", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
 
+        const result = await res.json();
         if (res.ok) {
           alert("Budget saved!");
           await fetchDashboardData();
         } else {
-          const error = await res.json();
-          alert("Failed to save budget: " + (error.error || "Unknown error"));
+          alert("Failed to save budget: " + (result.error || "Unknown error"));
         }
       } catch (err) {
         console.error("Error saving budget:", err);
@@ -143,70 +142,86 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-const expenseForm = document.getElementById("addExpenseForm");
 
-if (expenseForm) {
-  expenseForm.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  if (expenseForm) {
+    expenseForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const formData = new FormData(expenseForm);
-    const title = formData.get("title");
-    const amount = parseFloat(formData.get("amount"));
-    const category = formData.get("category");
-    const description = formData.get("description");
-    const userId = localStorage.getItem("user_id");
+      const formData = new FormData(expenseForm);
+      const title = formData.get("title")?.trim();
+      const amount = parseFloat(formData.get("amount"));
+      const category = formData.get("category");
+      const description = formData.get("description")?.trim();
 
-    if (!userId) {
-      alert("User not logged in.");
-      return;
-    }
+      if (!title || isNaN(amount) || amount <= 0 || !category || !description) {
+        alert("Please fill out all fields correctly.");
+        return;
+      }
 
-    if (!title || isNaN(amount) || !category) {
-      alert("Please fill out all fields correctly.");
-      return;
-    }
+      const payload = {
+        title,
+        amount,
+        category,
+        description,
+        user_id: userId,
+        date: new Date().toISOString()
+      };
 
-    const payload = {
-      title,
-      amount,
-      category,
-      description,
-      user_id: userId,
-      date: new Date().toISOString()
-    };
+      try {
+        const res = await fetch("/api/v1/expenses/", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await res.json();
+        if (res.ok) {
+          alert("Expense added successfully!");
+          expenseForm.reset();
+          fetchDashboardData();
+        } else {
+          alert("Failed to add expense: " + (result.error || "Unknown error"));
+        }
+      } catch (err) {
+        console.error("Add expense error:", err);
+        alert("Something went wrong.");
+      }
+    });
+  }
+  const deleteBudgetBtn = document.getElementById("deleteBudgetBtn");
+
+if (deleteBudgetBtn) {
+  deleteBudgetBtn.addEventListener("click", async () => {
+    if (!confirm("Are you sure you want to delete your budget?")) return;
 
     try {
-      const res = await fetch("/api/v1/expenses/", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
+      const res = await fetch(`/api/v1/budgets/${userId}`, {
+        method: "DELETE"
       });
 
+      const result = await res.json();
       if (res.ok) {
-        alert("Expense added successfully!");
-        expenseForm.reset();
-        fetchDashboardData();
+        alert("Budget deleted.");
+        await fetchDashboardData();
       } else {
-        const error = await res.json();
-        alert("Failed to add expense: " + (error.error || "Unknown error"));
+        alert("Failed to delete: " + (result.error || "Unknown error"));
       }
     } catch (err) {
-      console.error("Add expense error:", err);
+      console.error("Delete budget error:", err);
       alert("Something went wrong.");
     }
   });
 }
 
-
-  const logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
-    logoutBtn.onclick = () => {
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
       localStorage.removeItem("user_id");
       window.location.href = "/login";
-    };
+    });
   }
 
   if (dashboardReady) {
-    fetchDashboardData();
+    fetchDashboardData().catch(console.error);
   }
 });

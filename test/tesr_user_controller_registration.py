@@ -56,7 +56,7 @@ class TestUserControllerRegister(unittest.TestCase):
             "age": 22
         }
         resp = self.client.post("/api/v1/users/register", json=payload)
-        self.assertEqual(resp.status_code, 409)  # ✅ Expect 409
+        self.assertEqual(resp.status_code, 409)  #
         self.assertIn("error", resp.get_json())
 
     def test_register_invalid_input(self):

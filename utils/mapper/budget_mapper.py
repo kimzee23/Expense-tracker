@@ -1,7 +1,4 @@
-from xml.dom.minidom import Document
-
 from dtos.response.budget_response import BudgetResponse
-from models.budget_model import Budget
 from models.budget_model import Budget
 
 def document_to_budget_model(doc) -> Budget:
@@ -13,7 +10,7 @@ def document_to_budget_model(doc) -> Budget:
         end_date=doc["end_date"]
     )
 
-def budget_model_to_response_dto(model: Budget):
+def budget_model_to_response_dto(model: Budget) -> dict:
     return {
         "id": model.id,
         "user_id": model.user_id,

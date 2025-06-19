@@ -27,6 +27,9 @@
         <form id="budgetForm">
           <input type="number" id="budgetInput" placeholder="Enter budget amount (₦)" required />
           <button type="submit">Save Budget</button>
+          <button id="deleteBudgetBtn" type="button" style="margin-top: 10px; background: #e91e63; color: white;">
+  Delete Budget
+</button>
         </form>
       </section>
 
@@ -56,13 +59,13 @@
           <button type="submit">Add Expense</button>
         </form>
       </section>
-p
+
       <section class="card" id="recentExpenses">
         <h3>Recent Expenses</h3>
         <div id="recentExpensesList"></div>
       </section>
 
-      <!-- The Analytics Charts -->
+
       <section class="card" id="charts">
         <h3>Analytics</h3>
         <canvas id="lineChart"></canvas>
