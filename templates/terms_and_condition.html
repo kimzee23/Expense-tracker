@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terms & Conditions - Notepad</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/terms_and_condition.css') }}">
+</head>
+<body>
+  <div class="legal-container">
+    <header class="legal-header">
+      <h1>Terms & Conditions</h1>
+      <p class="last-updated">Last Updated: June 17, 2025</p>
+    </header>
+
+    <main class="legal-content">
+      <section class="legal-section">
+        <h2>1.Use of Service:</h2>
+        <p> Expense Tracker helps you manage your budgets and expenses. You are responsible for your data.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>2.Account Safety:</h2>
+        <p>Account Safety: Keep your login credentials confidential. Unauthorized access is your risk.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>3. Data Accuracy:</h2>
+        <p> You should verify your entries; we don’t guarantee data correctness.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>4. Prohibited Uses</h2>
+        <p>Don’t use it for illegal transactions or fraudulent activities.
+
+</p>
+        <ul>
+          <li>Violate any laws or regulations</li>
+          <li>Infringe intellectual property rights</li>
+          <li>Distribute harmful or offensive content</li>
+          <li>Disrupt the Service's operation</li>
+        </ul>
+      </section>
+
+      <section class="legal-section">
+        <h2>5. Service Availability</h2>
+        <p>  We may update or suspend services temporarily. We aim to minimize disruptions.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>6. Liability</h2>
+        <p>We provide the app as-is, not liable for financial losses or damages.</p>
+      </section>
+
+      <section class="legal-section">
+        <h2>7. Privacy Policy</h2>
+        <p>Data Collected: We store your personal info, budgets, expenses, and login info securely.
+
+           Data Sharing: We don’t sell or share your data with third parties without your consent.
+
+           Security: We use industry-standard protections but cannot guarantee 100% security.
+
+            Cookies: Used for login sessions and user preferences.
+
+            Your Rights: You can request data deletion or export anytime.
+.</p>
+      </section>
+
+    <footer class="legal-footer">
+      <p>If you have any questions about these Terms, please contact us at <a href="mailto:gazartechnology@gmail.com">gazarTech.com</a>.</p>
+      <a href="{{ url_for('auth.dashboard') }}" class="back-button">← Back to Notepad</a>
+    </footer>
+  </div>
+</body>
+</html>

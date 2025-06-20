@@ -31,6 +31,10 @@ def create_app(test_db=None):
     def landing():
         return render_template("landing.html")
 
+    @app.route('/terms')
+    def terms():
+        return render_template('terms_and_condition.html')
+
     return app
 
 if __name__ == "__main__":

@@ -27,6 +27,7 @@ def create_auth_controller(db):
         return render_template('dashboard.html',user_name=user_name)
 
     @auth_bp.route('/register', methods=['GET', 'POST'])
+    @auth_bp.route('/register', methods=['GET', 'POST'])
     def register():
         if request.method == 'GET':
             return render_template('register.html')
