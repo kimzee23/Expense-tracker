@@ -21,7 +21,6 @@ A simple and powerful web-based application to help users manage their daily exp
 - **Backend:** Python (Flask)
 - **Frontend:** HTML, CSS, JavaScript
 - **Database:** MongoDB
-- **Architecture:** Layered (Controller, Service, Repository, DTO, Model)
   
 ## Database
 
@@ -30,7 +29,7 @@ A simple and powerful web-based application to help users manage their daily exp
 
 ##	**Layered Architecture**  
 
-  -	Clean and scalable structure using controller, service, repository, and model layers.
+  -	Clean and scalable structure using controller, service, repository, DTOs and model layers.
 
 ##	 Create and activate a virtual environment:
 ```run
@@ -41,20 +40,22 @@ source venv/bin/activate
 -	venv\Scripts\activate
   
 ##	Install dependencies:
--	pip install -r requirements.txt
-  
+```
+pip install -r requirements.txt
+ ``` 
 ##	Set environment variables (optional for development):
--	export FLASK_APP=app.py
--	export FLASK_ENV=development
--	
+```
+	export FLASK_APP=app.py
+  export FLASK_ENV=development
+```
 ##	On Windows (Command Prompt):
 ```
--	set FLASK_APP=app.py
--	set FLASK_ENV=development
+set FLASK_APP=app.py
+set FLASK_ENV=development
 ```
 ##	Run the app:
 ```
--	flask run
+flask run
 ```
 ## Clone the Repository
 
