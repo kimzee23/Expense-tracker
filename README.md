@@ -30,7 +30,33 @@ A simple and powerful web-based application to help users manage their daily exp
 ##	**Layered Architecture**  
 
   -	Clean and scalable structure using controller, service, repository, DTOs and model layers.
+##	Api Endpoint:
+-	http://localhost:5000/api/v1/
+	
+-	**Auth**
+-	 Method  Endpoint            Description               
+-	 POST    `/auth/register`    Register a new user       
+-	 POST    `/auth/login`       Log in and receive token
+-	 
+-	 **Expense**
+-	Method  Endpoint            Description                    
+-	POST    `/expenses`         Add a new expense              
+-	GET     `/expenses`         Get all expenses for the user  
+-	GET     `/expenses/<id>`    Get a specific expense         
+-	PUT     `/expenses/<id>`    Update an expense              
+-	DELETE  `/expenses/<id>`    Delete an expense
+	
+-	**Budget**
+-	Method  Endpoint           Description                    
+-	POST    `/budget`         Set monthly budget             
+-	GET     `/budget`         Get current month's budget
 
+-	**Report**
+-	 Method  Endpoint            Description                    
+-	 GET    `/reports`         Get summary of expenses        
+
+      
+ 
 ##	 Create and activate a virtual environment:
 ```run
 python -m venv venv
@@ -62,5 +88,7 @@ flask run
 ```git clone
 git clone https://github.com/kimzee23/expense-tracker.git
 cd expense-tracker
+```
+
     
 
