@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const errorDiv = document.getElementById("loginError") || document.getElementById("registerError");
 
     function handleAuthSuccess(data) {
-        console.log("API response:", data); // for debug
+        console.log("API response:", data);
 
         const userId = data.user?.id || data.user_id || data.id;
         if (!userId) {
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
 
             const data = await response.json();
-            console.log("API response:", data); //  Debeg god abeg oh
+            console.log("API response:", data);
 
             const userId = data.user_id || data.user?.id;
 

@@ -25,7 +25,6 @@ class BudgetService:
             upsert=True
         )
 
-        # Return consistent result
         if result.upserted_id:
             return {"status": "created", "id": str(result.upserted_id)}
         else:

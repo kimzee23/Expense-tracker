@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const userId = localStorage.getItem("user_id");
   console.log("Current logged in user:", userId);
 
-  if (!userId) {
+  if (!userId && window.location.pathname.includes("dashboard")) {
     console.warn("No user_id found. Redirecting...");
     window.location.href = "/login";
     return;
@@ -17,6 +17,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const recentExpensesList = document.getElementById("recentExpensesList");
   const expenseForm = document.getElementById("addExpenseForm");
   const logoutBtn = document.getElementById("logoutBtn");
+  const registerForm = document.getElementById("registerForm");
+
   const lineCtx = document.getElementById("lineChart")?.getContext("2d");
   const categoryCtx = document.getElementById("categoryChart")?.getContext("2d");
   const timeCtx = document.getElementById("timeChart")?.getContext("2d");
@@ -42,7 +44,12 @@ document.addEventListener("DOMContentLoaded", () => {
       remainingBudgetEl.textContent = `Remaining: ₦${remain}`;
 
       recentExpensesList.innerHTML = (report.recent_expenses || [])
-        .map(e => `<div class="expense-item"><strong>${e.title}</strong> - ₦${e.amount} <em>(${e.category})</em></div>`)
+        .map(e => `
+          <div class="expense-item">
+            <strong>${e.title}</strong> - ₦${e.amount} <em>(${e.category})</em>
+            <button class="delete-expense" data-id="${e.id}">Delete</button>
+          </div>
+        `)
         .join("");
 
       if (lineCtx && report.expenses_by_date?.length) {
@@ -63,7 +70,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
       }
 
-
       if (categoryCtx && report.expenses_by_category && Object.keys(report.expenses_by_category).length > 0) {
         categoryChart?.destroy();
         categoryChart = new Chart(categoryCtx, {
@@ -78,7 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
       }
-
 
       if (timeCtx && report.expenses_by_hour?.length) {
         timeChart?.destroy();
@@ -186,36 +191,57 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
+
   const deleteBudgetBtn = document.getElementById("deleteBudgetBtn");
 
-if (deleteBudgetBtn) {
-  deleteBudgetBtn.addEventListener("click", async () => {
-    if (!confirm("Are you sure you want to delete your budget?")) return;
+  if (deleteBudgetBtn) {
+    deleteBudgetBtn.addEventListener("click", async () => {
+      if (!confirm("Are you sure you want to delete your budget?")) return;
 
-    try {
-      const res = await fetch(`/api/v1/budgets/${userId}`, {
-        method: "DELETE"
-      });
+      try {
+        const res = await fetch(`/api/v1/budgets/${userId}`, {
+          method: "DELETE"
+        });
 
-      const result = await res.json();
-      if (res.ok) {
-        alert("Budget deleted.");
-        await fetchDashboardData();
-      } else {
-        alert("Failed to delete: " + (result.error || "Unknown error"));
+        const result = await res.json();
+        if (res.ok) {
+          alert("Budget deleted.");
+          await fetchDashboardData();
+        } else {
+          alert("Failed to delete: " + (result.error || "Unknown error"));
+        }
+      } catch (err) {
+        console.error("Delete budget error:", err);
+        alert("Something went wrong.");
       }
-    } catch (err) {
-      console.error("Delete budget error:", err);
-      alert("Something went wrong.");
-    }
-  });
-}
+    });
+  }
 
   if (logoutBtn) {
     logoutBtn.addEventListener("click", (e) => {
       e.preventDefault();
       localStorage.removeItem("user_id");
       window.location.href = "/login";
+    });
+  }
+
+  if (registerForm) {
+    registerForm.addEventListener("submit", function (e) {
+      const password = document.getElementById("password")?.value?.trim();
+      const phone = document.getElementById("phone")?.value?.trim();
+
+      if (!password || password.length < 8) {
+        alert("Password must be at least 8 characters long.");
+        e.preventDefault();
+        return;
+      }
+
+      const phoneRegex = /^\+234\d{10}$/;
+      if (!phoneRegex.test(phone)) {
+        alert("Phone number must start with +234 and contain exactly 13 digits.");
+        e.preventDefault();
+        return;
+      }
     });
   }
 
