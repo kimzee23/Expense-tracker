@@ -1,4 +1,3 @@
-# app.py
 from flask import Flask, render_template
 from pymongo import MongoClient
 
@@ -20,7 +19,6 @@ def create_app(test_db=None):
     else:
         db = test_db
 
-
     app.register_blueprint(create_auth_controller(db), url_prefix="")
     app.register_blueprint(create_user_controller(db), url_prefix="/api/v1/users")
     app.register_blueprint(create_budget_controller(db), url_prefix="/api/v1/budgets")
@@ -37,6 +35,8 @@ def create_app(test_db=None):
 
     return app
 
+# 👇 This line creates a global `app` object
+app = create_app()
+
 if __name__ == "__main__":
-    app = create_app()
-    app.run(debug=True)
+    app.run(host="0.0.0.0", port=5000)
